@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Sourcing Intelligence</title>
+  <link rel="stylesheet" href="./product-sourcing-dashboard.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">PS</div>
+        <div>
+          <strong>PartSource IQ</strong>
+          <span>Sourcing desk</span>
+        </div>
+      </div>
+
+      <nav class="nav-list" aria-label="Primary">
+        <button class="nav-item active" type="button" data-tab="workspace">
+          <span>⌕</span> Search workspace
+        </button>
+        <button class="nav-item" type="button" data-tab="quotes">
+          <span>▤</span> Local quotes
+        </button>
+        <button class="nav-item" type="button" data-tab="outreach">
+          <span>✉</span> Outreach queue
+        </button>
+      </nav>
+
+      <div class="sidebar-panel">
+        <span class="panel-label">Today</span>
+        <strong>7 enquiries</strong>
+        <p>3 exact matches, 2 alternatives, 2 waiting for supplier replies.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Product sourcing intelligence</p>
+          <h1>Exact SKU search, pricing and supplier follow-up in one desk.</h1>
+        </div>
+        <div class="status-strip">
+          <div><span>Avg. search</span><strong>42 sec</strong></div>
+          <div><span>Sources</span><strong>11</strong></div>
+          <div><span>Approval</span><strong>Manual</strong></div>
+        </div>
+      </header>
+
+      <section class="tab-panel active" id="workspace">
+        <div class="workspace-grid">
+          <section class="panel enquiry-panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">New enquiry</p>
+                <h2>Search requirements</h2>
+              </div>
+              <span class="badge">AI-assisted</span>
+            </div>
+
+            <form id="searchForm" class="form-grid">
+              <label>
+                Part number / SKU
+                <input id="sku" name="sku" value="SM7B" placeholder="Example: SM7B, 6ES7214-1AG40-0XB0">
+              </label>
+              <label>
+                Brand
+                <input id="brand" name="brand" value="Shure" placeholder="Optional">
+              </label>
+              <label>
+                Quantity
+                <input id="quantity" name="quantity" type="number" min="1" value="3">
+              </label>
+              <label>
+                Delivery country
+                <select id="delivery" name="delivery">
+                  <option>UAE</option>
+                  <option>Saudi Arabia</option>
+                  <option>Qatar</option>
+                  <option>Oman</option>
+                </select>
+              </label>
+              <label>
+                Match type
+                <select id="matchType" name="matchType">
+                  <option>Exact SKU preferred</option>
+                  <option>Exact SKU only</option>
+                  <option>Alternatives allowed</option>
+                </select>
+              </label>
+              <label>
+                Condition
+                <select id="condition" name="condition">
+                  <option>New only</option>
+                  <option>New or open box</option>
+                  <option>Used acceptable</option>
+                </select>
+              </label>
+              <label class="wide">
+                Notes / specs
+                <textarea id="notes" name="notes" rows="3" placeholder="Add customer requirements, voltage, size, datasheet notes or target price.">Need landed UAE indication and supplier lead time.</textarea>
+              </label>
+              <button class="primary-action" type="submit">Run deep search</button>
+            </form>
+          </section>
+
+          <section class="panel ai-questions">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Before search</p>
+                <h2>Clarifying questions</h2>
+              </div>
+            </div>
+            <div class="question-list">
+              <label><input type="checkbox" checked> Request price breaks for entered quantity</label>
+              <label><input type="checkbox" checked> Include international shipping to UAE</label>
+              <label><input type="checkbox"> Include equivalent alternatives</label>
+              <label><input type="checkbox" checked> Prepare supplier enquiry drafts</label>
+            </div>
+            <div class="source-tags" id="sourceTags"></div>
+            <div class="rate-box">
+              <div class="rate-head">
+                <span>Google converter rate</span>
+                <strong>+5% buffer</strong>
+              </div>
+              <label>
+                USD to AED
+                <input id="rateUSD" type="number" step="0.0001" value="3.6725">
+              </label>
+              <label>
+                EUR to AED
+                <input id="rateEUR" type="number" step="0.0001" value="4.2500">
+              </label>
+              <label>
+                JPY to AED
+                <input id="rateJPY" type="number" step="0.0001" value="0.0255">
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel results-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Search results</p>
+              <h2>Exact priced results</h2>
+            </div>
+            <div class="table-actions">
+              <span class="badge">Exact SKU + price only</span>
+            </div>
+          </div>
+          <div class="summary-cards" id="summaryCards"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Source</th>
+                  <th>Supplier</th>
+                  <th>AED price</th>
+                  <th>Lead time</th>
+                  <th>Verify</th>
+                  <th>Confidence</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="tab-panel" id="quotes">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Local market</p>
+              <h2>Vendor quote tracker</h2>
+            </div>
+            <button type="button" id="addQuote">Add local quote</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Vendor</th>
+                  <th>Contact</th>
+                  <th>Price</th>
+                  <th>Lead time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="quotesBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="tab-panel" id="outreach">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Approval required</p>
+              <h2>Supplier enquiry drafts</h2>
+            </div>
+            <span class="badge warning">Human review</span>
+          </div>
+          <div id="outreachList" class="outreach-list"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./product-sourcing-dashboard.js"></script>
+</body>
+</html>
