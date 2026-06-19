@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/athar/athargroup.com/productsourcing/
-    - /bin/cp index.html $DEPLOYPATH
-    - /bin/cp product-sourcing-dashboard.css $DEPLOYPATH
-    - /bin/cp product-sourcing-dashboard.js $DEPLOYPATH
+    - export DEPLOYPATH=/home/athar/athargroup.com/productsourcing
+    - /bin/cp -f index.html $DEPLOYPATH/index.html
+    - /bin/cp -f product-sourcing-dashboard.css $DEPLOYPATH/product-sourcing-dashboard.css
+    - /bin/cp -f product-sourcing-dashboard.js $DEPLOYPATH/product-sourcing-dashboard.js
